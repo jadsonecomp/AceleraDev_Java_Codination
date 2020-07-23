@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,7 +14,7 @@ public interface SubmissionRepository extends CrudRepository<Submission, Submiss
 
     @Query("select max(sub.score) from Submission sub " +
             "where sub.id.challenge.id = :challengId ")
-    Optional<Submission> findHigherScoreByChallengeId(@Param("challengId") Long challengId);
+    BigDecimal findHigherScoreByChallengeId(@Param("challengId") Long challengId);
 
     @Query("from Submission sub " +
             "inner join Challenge cha on sub.id.challenge.id = cha.id " +
