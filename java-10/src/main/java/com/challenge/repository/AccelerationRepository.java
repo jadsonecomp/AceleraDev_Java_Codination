@@ -15,12 +15,11 @@ public interface AccelerationRepository extends CrudRepository<Acceleration, Lon
     @Query("from Acceleration acc where acc.id = :idAcceleration")
     Optional<Acceleration> findAccelerationById(@Param("idAcceleration") Long idAcceleration);
 
-    @Query("from Acceleration acc where acc.name = :nameAcceleration")
-    Optional<Acceleration> findAccelerationByName(@Param("nameAcceleration") String nameAcceleration);
+    Optional<Acceleration> findAccelerationByName(String name);
 
     @Query("from Acceleration acc " +
-            "inner join Candidate canId ON acc.id = canId.id.acceleration.id " +
-            "inner join Company com ON canId.id.company.id = com.id " +
+            "inner join acc.candidates canId " +
+            "inner join canId.id.company com " +
             "where com.id = :companyId")
     List<Acceleration> findByCompanyId(@Param("companyId") Long companyId);
 }

@@ -1,26 +1,25 @@
 package com.challenge.repository;
 
 import com.challenge.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface UserRepository extends CrudRepository<User, Long> {
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<User> findById(Long id);
-
-    @Query("from User use " +
-            "inner join Candidate can on use.id = can.id.user.id " +
-            "inner join Acceleration acc on can.id.acceleration.id = acc.id " +
-            "where acc.name = :accelerationName")
+    @Query(value = "from User use " +
+            "join use.candidates can " +
+            "where can.id.acceleration.name = :accelerationName")
     List<User> findByAccelerationName(@Param("accelerationName") String accelerationName);
 
-    @Query("from User use " +
-            "inner join Candidate can on use.id = can.id.user.id " +
-            "inner join Company com on can.id.company.id = com.id " +
-            "where com.id = :companyId")
+    @Query(value = "from User use " +
+            "join use.candidates can " +
+            "where can.id.company.id = :companyId")
     List<User> findByCompanyId(@Param("companyId") Long companyId);
 }

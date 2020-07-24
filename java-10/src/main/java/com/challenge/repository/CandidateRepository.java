@@ -13,17 +13,17 @@ public interface CandidateRepository extends CrudRepository<Candidate, Candidate
 
     List<Candidate> findAll();
 
-    @Query("from Candidate can where can.id.company = :companyId")
+    @Query("from Candidate can where can.id.company.id = :companyId")
     List<Candidate> findByCompanyId(@Param("companyId") Long companyId);
 
-    @Query("from Candidate can where can.id.acceleration = :accelerationId")
+    @Query("from Candidate can where can.id.acceleration.id = :accelerationId")
     List<Candidate> findByAccelerationId(@Param("accelerationId") Long accelerationId);
 
-    @Query("from Candidate can where " +
-            "can.id.company.id = :companyId and " +
-            "can.id.acceleration.id = :accelerationId and " +
-            "can.id.user.id = :userId")
-    Optional<Candidate> findByAllId(@Param("companyId") Long companyId,
-                                    @Param("accelerationId") Long accelerationId,
-                                    @Param("userId") Long userId);
+    @Query("FROM Candidate ca WHERE ca.id.user.id = :userId " +
+            "AND ca.id.company.id = :companyId AND ca.id.acceleration.id = :accelerationId")
+    Optional<Candidate> findById(@Param("userId") Long userId,
+                                 @Param("companyId") Long companyId,
+                                 @Param("accelerationId") Long accelerationId);
+
+    Optional<Candidate> findById(CandidateId id);
 }

@@ -22,7 +22,7 @@ public class CandidateService implements CandidateServiceInterface{
 
     @Override
     public Optional<Candidate> findById(Long userId, Long companyId, Long accelerationId) {
-        return this.candidateRepository.findByAllId(companyId, accelerationId, userId);
+        return this.candidateRepository.findById(userId, companyId, accelerationId);
     }
 
     @Override
